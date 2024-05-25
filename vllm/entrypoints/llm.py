@@ -84,7 +84,7 @@ class LLM:
         tokenizer_mode: str = "auto",
         skip_tokenizer_init: bool = False,
         trust_remote_code: bool = False,
-        tensor_parallel_size: int = 1,
+        tensor_parallel_size: int = 2,
         dtype: str = "auto",
         quantization: Optional[str] = None,
         revision: Optional[str] = None,
@@ -100,6 +100,7 @@ class LLM:
     ) -> None:
         if "disable_log_stats" not in kwargs:
             kwargs["disable_log_stats"] = True
+        # engin_args存储模型参数
         engine_args = EngineArgs(
             model=model,
             tokenizer=tokenizer,
@@ -139,7 +140,7 @@ class LLM:
         prompts: Optional[Union[str, List[str]]] = None,
         sampling_params: Optional[Union[SamplingParams,
                                         List[SamplingParams]]] = None,
-        prompt_token_ids: Optional[List[List[int]]] = None,
+        prompt_token_ids: Optional[List[List[int]]] = None, #可以使用prompt_token_ids而不是prompts作为输入
         use_tqdm: bool = True,
         lora_request: Optional[LoRARequest] = None,
         multi_modal_data: Optional[MultiModalData] = None,
@@ -173,8 +174,8 @@ class LLM:
         if self.llm_engine.model_config.skip_tokenizer_init \
             and prompts is not None:
             raise ValueError("prompts must be None if skip_tokenizer_init "
-                             "is True")
-        if isinstance(prompts, str):
+                             "is True") 
+        if isinstance(prompts, str): 
             # Convert a single prompt to a list.
             prompts = [prompts]
         if (prompts is not None and prompt_token_ids is not None

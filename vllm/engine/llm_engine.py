@@ -169,7 +169,7 @@ class LLMEngine:
             load_config=load_config,
         )
 
-        self._initialize_kv_caches()
+        self._initialize_kv_caches() #初始化kv cache
 
         # If usage stat is enabled, collect relevant info.
         if is_usage_stats_enabled():
@@ -209,7 +209,7 @@ class LLMEngine:
         if self.tokenizer:
             # Ping the tokenizer to ensure liveness if it runs in a
             # different process.
-            self.tokenizer.ping()
+            self.tokenizer.ping() #ping检测tokenizer是否可用
 
         # Create the scheduler.
         # NOTE: the cache_config here have been updated with the numbers of
@@ -255,13 +255,14 @@ class LLMEngine:
                 "num_gpu_blocks_override=%d", num_gpu_blocks,
                 num_gpu_blocks_override)
             num_gpu_blocks = num_gpu_blocks_override
-
+            #num_gpu_blocks_override：Number of GPU blocks to use. This overrides the profiled num_gpu_blocks if specified. Does nothing if None.
+            #num_gpu_blocks_override用于用户指定要使用的GPU块数
         self.cache_config.num_gpu_blocks = num_gpu_blocks
         self.cache_config.num_cpu_blocks = num_cpu_blocks
 
         self.model_executor.initialize_cache(num_gpu_blocks, num_cpu_blocks)
 
-    @classmethod
+    @classmethod 
     def from_engine_args(
         cls,
         engine_args: EngineArgs,
@@ -581,7 +582,7 @@ class LLMEngine:
             >>>     if not (engine.has_unfinished_requests() or example_inputs):
             >>>         break
         """
-        seq_group_metadata_list, scheduler_outputs = self.scheduler.schedule()
+        seq_group_metadata_list, scheduler_outputs = self.scheduler.schedule() #生成对这些请求的schedule
 
         if not scheduler_outputs.is_empty():
             execute_model_req = ExecuteModelRequest(

@@ -17,6 +17,8 @@ from vllm.logger import init_logger
 
 logger = init_logger(__name__)
 
+# gate = False # gate for output the q,k,v
+
 
 class XFormersBackend(AttentionBackend):
 
@@ -214,7 +216,7 @@ class XFormersImpl(AttentionImpl):
         query = query[:num_prefill_tokens]
         key = key[:num_prefill_tokens]
         value = value[:num_prefill_tokens]
-
+        
         assert query.shape[0] == num_prefill_tokens
         assert decode_query.shape[0] == num_decode_tokens
 

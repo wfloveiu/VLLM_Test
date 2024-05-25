@@ -17,7 +17,7 @@ def nullable_str(val: str):
     return val
 
 
-@dataclass
+@dataclass  #python数据类
 class EngineArgs:
     """Arguments for vLLM engine."""
     model: str

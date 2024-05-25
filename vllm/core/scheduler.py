@@ -925,7 +925,7 @@ class Scheduler:
         # Create input data structures.
         seq_group_metadata_list: List[SequenceGroupMetadata] = []
         for i, scheduled_seq_group in enumerate(
-                scheduler_outputs.scheduled_seq_groups):
+                scheduler_outputs.scheduled_seq_groups): #scheduled_seq_groups是list，包含多个ScheduledSequenceGroup
             seq_group = scheduled_seq_group.seq_group
             token_chunk_size = scheduled_seq_group.token_chunk_size
             seq_group.maybe_set_first_scheduled_time(now)

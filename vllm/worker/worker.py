@@ -132,7 +132,7 @@ class Worker(WorkerBase):
         """
         # Profile the memory usage of the model and get the maximum number of
         # cache blocks that can be allocated with the remaining free memory.
-        torch.cuda.empty_cache()
+        torch.cuda.empty_cache() # 释放CUDA设备上未被引用的内存
 
         # Execute a forward pass with dummy inputs to profile the memory usage
         # of the model.
@@ -152,9 +152,9 @@ class Worker(WorkerBase):
         cache_block_size = self.get_cache_block_size_bytes()
         num_gpu_blocks = int(
             (total_gpu_memory * self.cache_config.gpu_memory_utilization -
-             peak_memory) // cache_block_size)
+             peak_memory) // cache_block_size) #GPU中可放置多少个缓存块
         num_cpu_blocks = int(self.cache_config.swap_space_bytes //
-                             cache_block_size)
+                             cache_block_size)#Size of the CPU swap space per GPU (in GiB).
         num_gpu_blocks = max(num_gpu_blocks, 0)
         num_cpu_blocks = max(num_cpu_blocks, 0)
         if self.model_runner.lora_manager:

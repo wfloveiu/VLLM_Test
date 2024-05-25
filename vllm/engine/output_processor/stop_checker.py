@@ -6,7 +6,7 @@ from vllm.sampling_params import SamplingParams
 from vllm.sequence import Sequence, SequenceStatus
 
 
-class StopChecker:
+class StopChecker: #用于推理停止的检查
     """LLMEngine helper class which separates out the logic involving stop
     checking. This checks things such as: whether the eos token was emitted,
     whether the max_tokens has been consumed, whether a stop string has been

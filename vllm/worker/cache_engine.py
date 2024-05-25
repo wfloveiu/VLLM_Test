@@ -93,7 +93,7 @@ class CacheEngine:
         key_cache_block = cache_config.block_size * num_heads * head_size
         value_cache_block = key_cache_block
         total = num_layers * (key_cache_block + value_cache_block)
-        if cache_config.cache_dtype == "auto":
+        if cache_config.cache_dtype == "auto": #cache_dtype:数据存储方式如FP16等
             dtype = model_config.dtype
         else:
             dtype = STR_DTYPE_TO_TORCH_DTYPE[cache_config.cache_dtype]

@@ -222,7 +222,7 @@ class Sequence:
         self.output_logprobs: SampleLogprobs = []
         self.output_text = ""
 
-        self.logical_token_blocks: List[LogicalTokenBlock] = []
+        self.logical_token_blocks: List[LogicalTokenBlock] = [] #维护逻辑token块的list列表
         # Initialize the logical token blocks with the prompt token ids.
         self._append_tokens_to_blocks(prompt_token_ids)
         self.status = SequenceStatus.WAITING
@@ -271,15 +271,15 @@ class Sequence:
     def _append_tokens_to_blocks(self, token_ids: List[int]) -> None:
         cursor = 0
         while cursor < len(token_ids):
-            if not self.logical_token_blocks:
+            if not self.logical_token_blocks: #还没有逻辑token块列表，就先去申请一个逻辑块并加入列表
                 self._append_logical_block()
 
-            last_block = self.logical_token_blocks[-1]
+            last_block = self.logical_token_blocks[-1] #最后一个逻辑块
             if last_block.is_full():
                 self._append_logical_block()
                 last_block = self.logical_token_blocks[-1]
 
-            num_empty_slots = last_block.get_num_empty_slots()
+            num_empty_slots = last_block.get_num_empty_slots() #这个逻辑块中还能存的token数
             last_block.append_tokens(token_ids[cursor:cursor +
                                                num_empty_slots])
             cursor += num_empty_slots

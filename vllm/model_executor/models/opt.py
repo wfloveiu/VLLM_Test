@@ -151,6 +151,7 @@ class OPTDecoderLayer(nn.Module):
         # Self Attention
         residual = hidden_states
         # 125m, 1.7B, ..., 175B applies layer norm BEFORE attention
+        # print(hidden_states.tolist())
         if self.do_layer_norm_before:
             hidden_states = self.self_attn_layer_norm(hidden_states)
         hidden_states = self.self_attn(hidden_states=hidden_states,
@@ -244,8 +245,10 @@ class OPTDecoder(nn.Module):
         hidden_states = inputs_embeds + pos_embeds
 
         for i in range(len(self.layers)):
+            # print("layer: ",i) #print layer
             layer = self.layers[i]
             hidden_states = layer(hidden_states, kv_caches[i], attn_metadata)
+            # print("-----------------------------------------------")
 
         if self.final_layer_norm is not None:
             hidden_states = self.final_layer_norm(hidden_states)
